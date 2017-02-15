@@ -3,13 +3,16 @@ import { connect } from 'react-redux';
 import { Button, Grid, Row, Col } from 'react-bootstrap'
 import CircleSvg from './CircleSvg';
 import { hashHistory } from 'react-router';
+import { singleMeasureAction } from '../actions/sensorActions'
 
 const mapStateToProps = (state) => {
     return{
+
     };
 };
 const mapDispatchToProps = (dispatch) => {
     return{
+      onSingleMeasureAction: (isConnected) => dispatch(singleMeasureAction(isConnected)),
     };
 };
 
@@ -29,6 +32,7 @@ export default class MeasureRefPlane extends React.Component {
   componentDidMount(){
   }
   onMeasure() {
+    this.props.onSingleMeasureAction(true);
     if (this.state.pointOne.status === 'active') {
       this.setState({
         ...this.state,

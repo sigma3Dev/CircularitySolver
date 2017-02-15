@@ -1,7 +1,7 @@
 import { chooseFaroIonRequest, chooseFaroIonSuccessful, chooseFaroIonFail,
         chooseFaroVantageRequest, chooseFaroVantageSuccessful, chooseFaroVantageFail,
         chooseLeicaRequest, chooseLeicaSuccessful, chooseLeicaFail,
-        connectSensorRequest, connectSensorSuccessful, connectSensorFail,
+        connectSensor, connectSensorRequest, connectSensorSuccessful, connectSensorFail,
         singleMeasureActionRequest, singleMeasureActionSuccessful, singleMeasureActionFail,
         disConnectSensorRequest, disConnectSensorSuccessful, disConnectSensorFail,
         toggleSensorRequest, toggleSensorSuccessful, toggleSensorFail,
@@ -110,6 +110,7 @@ export const initWebSocket = (store) => {
      // checks if Cmd.Type is right and if evt.data.id matchs with activeCmd.id
     if (activeCmd.type === 'connect' && activeCmd.id === response.id) {
        console.log('onmessage connect');
+       console.log(response);
       if (response.result.successful) {
         store.dispatch(connectSensorSuccessful(response));
         return;
@@ -132,6 +133,7 @@ export const initWebSocket = (store) => {
      // Block which handle´s the Measure Button Response
     } else if (activeCmd.type === 'measure' && activeCmd.id === response.id) {
        console.log('onmessage measure')
+       console.log(response);
       if (!response.hasOwnProperty('error')) {
         store.dispatch(singleMeasureActionSuccessful(response));
          return;
@@ -183,8 +185,10 @@ export const initWebSocket = (store) => {
       //Block wich handle´s the ChooseFaroIOn  Response
      }else if (activeCmd.type == 'chooseFaroIon' && activeCmd.id == response.id){
        console.log('onmessage chooseFaroIon')
+       console.log(response);
        if(!response.hasOwnProperty('error')){
          store.dispatch(chooseFaroIonSuccessful(response));
+         store.dispatch(connectSensor());
          return;
        }else{
          store.dispatch(chooseFaroIonFail(response));
@@ -328,8 +332,6 @@ function connect(){
               }, undefined, 4)
 
   //fire methods and websocket
-  writeToScreen('SENT: ');
-  writeToScreen(message);
   websocket.send(message);
 }
 
@@ -352,22 +354,7 @@ function disconnect(){
                 "params": {}
               })
   //fire methods and websocket
-  writeToScreen('SENT: ');
-  writeToScreen(message);
   websocket.send(message);
-}
-
-/**
-*
-*@param {string} message - string to display on screen
-*/
-function writeToScreen(message){
-
-  const output = document.getElementById("output_area");
-  var pre = document.createElement("p");
-  pre.style.wordWrap = "break-word";
-  pre.innerHTML = message;
-  output.appendChild(pre);
 }
 
 /**
@@ -388,8 +375,6 @@ function measure(){
               })
 
   //fire methods and websocket
-  writeToScreen('SENT: ');
-  writeToScreen(message);
   websocket.send(message);
 
 }
@@ -409,8 +394,6 @@ function toggle(){
                 "method": "doSensorAction",
                 "params": {"name": "toggleSightOrientation", "params":[]}
               })
-  writeToScreen('SENT: ');
-  writeToScreen(message);
   websocket.send(message);
 }
 
@@ -429,8 +412,6 @@ function home(){
                  "method": "doSensorAction",
                  "params": {"name": "home", "params":[]}
                })
-   writeToScreen('SENT: ');
-   writeToScreen(message);
    websocket.send(message);
  }
 
@@ -450,8 +431,6 @@ function compIt(){
                   "method": "doSensorAction",
                   "params": {"name": "compIt", "params":[]}
                 })
-    writeToScreen('SENT: ');
-    writeToScreen(message);
     websocket.send(message);
   }
   /**
@@ -472,8 +451,6 @@ function initializeLeica(){
                 })
 
     var messageFormatted = JSON.stringify(JSON.parse(message),null,2);
-    writeToScreen('SENT: ');
-    writeToScreen(messageFormatted);
     websocket.send(message);
   }
   /**
@@ -522,10 +499,8 @@ function chooseFaroIon()
                   }
                 }
               }, undefined, 4)
-
+    console.log(message);
     websocket.send(message);
-    writeToScreen('SENT: ');
-    writeToScreen(message);
   }
   /**
    *Sends Request(Object) to the webservice which tell the "backend" the Tracker
@@ -572,8 +547,6 @@ function chooseFaroVantage(){
                   }
                 }
               }, undefined, 4)
-    writeToScreen('SENT: ');
-    writeToScreen(message);
     websocket.send(message);
 }
 /**
@@ -623,8 +596,6 @@ function chooseFaroVantage(){
                 }
               }
             })
-  writeToScreen('SENT: ');
-  writeToScreen(message);
   websocket.send(message);
 }
 
@@ -660,8 +631,6 @@ function twoSideMeasurementConfig(){
            }
        }], }
   })
-    writeToScreen('SENT: ');
-    writeToScreen(message);
     websocket.send(message);
   }
   function singleMeasurementConfig(){
@@ -691,7 +660,5 @@ function twoSideMeasurementConfig(){
              }
          }], }
     })
-      writeToScreen('SENT: ');
-      writeToScreen(message);
       websocket.send(message);
     }

@@ -1,13 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import {Grid, Row, Col, Thumbnail, Button, Modal} from 'react-bootstrap';
+import {setSensor , connectSensor,disConnectSensor} from '../actions/sensorActions';
 
 const mapStateToProps = (state) => {
   return {
   };
 };
 const mapDispatchToProps = (dispatch) => {
-  return {
+  return{
+    onSetSensor: (name) => dispatch(setSensor(name)),
   };
 };
 
@@ -65,13 +67,13 @@ export default class StartScreen extends React.Component {
         <Grid style={{ marginTop: '74px' }}>
           <Row>
             <Col xs={4} md={4} lg={4}>
-              <Button style={{ height: '300px', width: '300px' }} href="#/measurerefplane">
+              <Button style={{ height: '300px', width: '300px' }} href="#/measurerefplane" onClick={() => this.props.onSetSensor('FaroIon')} >
                 <img style={{ height: '80%' }} alt="Faro Ion" src="./assets/ion.png" />
                 <p style={{ fontSize: '24px' }} >Faro Ion</p>
               </Button>
             </Col>
             <Col xs={4} md={4} lg={4}>
-              <Button style={{ height: '300px', width: '300px' }} href="#/measurerefplane">
+              <Button style={{ height: '300px', width: '300px' }} href="#/measurerefplane" onClick={() => this.props.onSetSensor('FaroVantage')}>
                 <img style={{ height: '80%' }} alt="Faro Vantage" src="./assets/vantage.png" />
                 <p style={{ fontSize: '24px' }} >Faro Vantage</p>
               </Button>
