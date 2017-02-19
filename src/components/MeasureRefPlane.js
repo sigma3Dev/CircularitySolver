@@ -1,38 +1,35 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Button, Grid, Row, Col } from 'react-bootstrap'
+import { Button, Grid, Row, Col } from 'react-bootstrap';
 import CircleSvg from './CircleSvg';
 import { hashHistory } from 'react-router';
-import { singleMeasureAction } from '../actions/sensorActions'
+import { measurePointOnPlane } from '../actions/measureRefPlaneActions';
 
-const mapStateToProps = (state) => {
-    return{
-
-    };
+const mapStateToProps = state => {
+  return {};
 };
-const mapDispatchToProps = (dispatch) => {
-    return{
-      onSingleMeasureAction: (isConnected) => dispatch(singleMeasureAction(isConnected)),
-    };
+const mapDispatchToProps = dispatch => {
+  return {
+    onSingleMeasureAction: () => dispatch(measurePointOnPlane()),
+  };
 };
 
 @connect(mapStateToProps, mapDispatchToProps)
 export default class MeasureRefPlane extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
       pointOne: { status: 'active' },
       pointTwo: { status: 'deactive' },
       pointThree: { status: 'deactive' },
-      pointFour: { status: 'deactive' }
-    }
+      pointFour: { status: 'deactive' },
+    };
     this.onMeasure = this.onMeasure.bind(this);
   }
-  componentDidMount(){
+  componentDidMount() {
   }
   onMeasure() {
-    this.props.onSingleMeasureAction(true);
+    this.props.onSingleMeasureAction();
     if (this.state.pointOne.status === 'active') {
       this.setState({
         ...this.state,
@@ -58,16 +55,20 @@ export default class MeasureRefPlane extends React.Component {
       });
       hashHistory.push('/measurecircle');
     } else {
-
     }
   }
 
-
   render() {
-    const first = ['The blue circle shows, where you can place the reflektor.',<br/>,
-      'Press "Measure" to record a point.'];
-    const second = ['The green circle shows,if your record was successful.',<br/>,
-      'You need 4 points to complete this task.'];
+    const first = [
+      'The blue circle shows, where you can place the reflektor.',
+      <br />,
+      'Press "Measure" to record a point.',
+    ];
+    const second = [
+      'The green circle shows,if your record was successful.',
+      <br />,
+      'You need 4 points to complete this task.',
+    ];
     return (
       <div style={{ marginTop: '44px' }}>
         <h2>Please measure 4 points on the flange</h2>
@@ -81,11 +82,13 @@ export default class MeasureRefPlane extends React.Component {
         />
         <Grid>
           <Row className="show-grid">
-            <Col sm={6} md={4} mdOffset={4}><br/>{first} </Col>
+            <Col sm={6} md={4} mdOffset={4}><br />{first} </Col>
             <Col sm={6} md={4} mdOffset={4}>{second} </Col>
           </Row>
         </Grid>
-        <Button class="btn btn-default central-button" onClick={this.onMeasure}>MEASURE</Button>
+        <Button class="btn btn-default central-button" onClick={this.onMeasure}>
+          MEASURE
+        </Button>
       </div>
     );
   }

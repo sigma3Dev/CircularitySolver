@@ -1,9 +1,4 @@
 import React from 'react';
-import { Navbar, Nav, NavItem } from 'react-bootstrap';
-import { Link } from 'react-router';
-import { Button } from 'react-bootstrap'
-import TrackerStatus from './TrackerStatus';
-import { hashHistory } from 'react-router';
 
 export default class TrackerNavbar extends React.Component {
 
