@@ -55,6 +55,6 @@ console.log ('ich bin hier bei BSCheck FUNKTION')
       return dispatch => {dispatch(twoSideMeasConfigFail(error));};
   }
   return dispatch => {
-      dispatch(twoSideMeasConfigRequest());
+    dispatch(twoSideMeasConfigRequest());
   };
 }

@@ -36,34 +36,8 @@ export default class StartScreen extends React.Component {
   }
 
   render() {
-
-    const modalInstance = (
-      <div className="static-modal">
-        <Modal.Dialog>
-          <Modal.Header>
-            <Modal.Title>Welcome!</Modal.Title>
-          </Modal.Header>
-
-          <Modal.Body>
-             First time here?
-            <br></br>
-             get started with my blog on <a href="https://medium.com/@KE_NIA/conception-and-development-of-an-assistance-software-for-lasertracker-based-circularity-measurement-159ab86fe00#.wc95ktr4c">medium</a>
-            <br></br>
-            <br></br>
-            <p> Otherwise, Lets go!</p>
-          </Modal.Body>
-
-          <Modal.Footer style={{ textAlign: 'center'}}>
-            <Button bsStyle="primary" onClick={this.onClickModal}>Let´s go!</Button>
-          </Modal.Footer>
-
-        </Modal.Dialog>
-      </div>
-    );
-
     return (
       <div>
-        {this.state.showModal ? modalInstance : null}
         <Grid style={{ marginTop: '74px' }}>
           <Row>
             <Col xs={4} md={4} lg={4}>

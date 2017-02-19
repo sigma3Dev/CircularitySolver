@@ -1,9 +1,10 @@
-import {applyMiddleware, createStore, compose} from "redux";
+import { applyMiddleware, createStore, compose } from 'redux';
 import rootReducer from '../reducer/rootReducer';
-import {sensorSocketMiddleware} from '../middleware/sensorSocketMW';
-import thunkMiddleware from "redux-thunk";
+import { sensorSocketMiddleware } from '../middleware/sensorSocketMW';
+import thunkMiddleware from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
-import thunk from "redux-thunk";
+import thunk from 'redux-thunk';
+
 /**
  * Create the store.
  *
@@ -11,9 +12,8 @@ import thunk from "redux-thunk";
  * @returns {*}
  */
 export default function configureStore(preloadedState) {
-
-    const logger = (store) => (next) => (action) => {
-        console.log("action fired", action);
+  const logger = store => next => (action) => {
+    console.log("action fired", action);
         next(action);
     };
 
