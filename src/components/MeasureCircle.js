@@ -1,8 +1,20 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Button, Grid, Row, Col } from 'react-bootstrap'
 import CircleSvg from './CircleSvg';
 import { hashHistory } from 'react-router';
+import { scanCircle } from '../actions/scanCircleActions';
 
+const mapStateToProps = state => {
+  return {};
+};
+const mapDispatchToProps = dispatch => {
+  return {
+    onScanCircleAction: () => dispatch(scanCircle()),
+  };
+};
+
+@connect(mapStateToProps, mapDispatchToProps)
 export default class MeasureCircle extends React.Component {
 
   constructor(props) {
@@ -11,6 +23,7 @@ export default class MeasureCircle extends React.Component {
   }
 
   onMeasure(){
+    this.props.onScanCircleAction();
     hashHistory.push('/circularityresult')
   }
 

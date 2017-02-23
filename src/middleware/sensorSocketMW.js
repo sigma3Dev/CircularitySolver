@@ -92,7 +92,8 @@ export const initWebSocket = (store) => {
     } else if (
       activeCmd.type === 'measureRefPlane' && activeCmd.id === response.id
     ) {
-      if (response.error == null) {
+      console.log(response)
+      if (response.error == null && response.result.observationCount !== 0) {
         const singlePointMeasurement = {
           coords: {
             x: response.result.observations[0].values[0],
@@ -107,6 +108,8 @@ export const initWebSocket = (store) => {
     } else if (
       activeCmd.type === 'scanCircleRequest' && activeCmd.id === response.id
     ) {
+      console.log('scanning request');
+      console.log(response)
       if (response.error == null) {
         activeCmd.id += 1;
         activeCmd.type = 'scanCircleMeasurement';
@@ -117,7 +120,9 @@ export const initWebSocket = (store) => {
     } else if (
       activeCmd.type === 'scanCircleMeasurement' && activeCmd.id === response.id
     ) {
-      if (response.error == null) {
+      console.log('scan result')
+      console.log(response);
+      if (response.error == null && response.result.observationCount !== 0) {
         store.dispatch(scanCircleSuccessful(response.result.observations));
       } else {
         store.dispatch(scanCircleFail(response));
