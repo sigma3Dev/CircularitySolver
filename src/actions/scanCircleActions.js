@@ -31,7 +31,6 @@ export const scanCircleFail = error => ({
   payload: error,
 });
 
-
 /**
 * start scan measurement of circle element
 */

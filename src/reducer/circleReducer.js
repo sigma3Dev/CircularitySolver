@@ -5,6 +5,8 @@ import {
   SCAN_CIRCLE_FAIL,
 } from '../actions/scanCircleActions';
 
+import { CALC_CIRCULARITY_SUCCESSFUL } from '../actions/calcCircularityActions';
+
 /**
  * Holds the initial circle state.
  *
@@ -32,6 +34,16 @@ const circleReducer = (state = initialCircle, action) => {
       return {
         ...state,
         measurements: action.payload,
+      };
+    }
+    case CALC_CIRCULARITY_SUCCESSFUL: {
+      if (action.payload == null) {
+        return state;
+      }
+      return {
+        ...state,
+        circularity: action.payload.circularity,
+        radius: action.payload.radius,
       };
     }
     case SCAN_CIRCLE_FAIL:

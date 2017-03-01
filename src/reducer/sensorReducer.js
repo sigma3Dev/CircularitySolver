@@ -1,4 +1,5 @@
 import {
+  CONNECT_SENSOR_REQUEST,
   CHOOSE_FAROION_SUCCESSFUL,
   CHOOSE_FAROION_FAIL,
   CHOOSE_VANTAGE_SUCCESSFUL,
@@ -16,6 +17,7 @@ const initialSensor = {
   activeSensor: 'none', // name as string of the sensor
   sensorTypes: ['none', 'FaroIon', 'FaroVantage', 'LeicaAt40x'], // all available sensor types
   isConnected: false, // check if sensor is connected
+  isConnecting: false,
 };
 
 /**
@@ -58,15 +60,21 @@ const sensorReducer = (state = initialSensor, action) => {
         activeSensor: 'none',
       });
     }
-
+    case CONNECT_SENSOR_REQUEST: {
+      return Object.assign({}, state, {
+        isConnecting: true,
+      });
+    }
     case CONNECT_SENSOR_SUCCESSFUL: {
       return Object.assign({}, state, {
         isConnected: action.response.result.successful,
+        isConnecting: false,
       });
     }
     case CONNECT_SENSOR_FAIL: {
       return Object.assign({}, state, {
         isConnected: action.error.result.successful,
+        isConnecting: false,
       });
     }
     case DISCONNECT_SENSOR_SUCCESSFUL: {
