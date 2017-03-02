@@ -20,10 +20,19 @@ export default class MeasureCircle extends React.Component {
   componentDidMount() {}
 
   render() {
+
+    const circularity = parseFloat(this.props.circularity*1000).toFixed(3);
+    let isOk = "circularity-result-ok";
+    let icon = <i style={{ marginTop: '50px' }} class="fa fa-thumbs-o-up fa-5x" />
+    if (this.props.circularity * 1000 > 0.5) {
+      isOk = "circularity-result-nok";
+      icon = <i style={{ marginTop: '50px' }} class="fa fa-thumbs-o-down fa-5x" />
+    }
+
     return (
       <div class=" circularity-result-justification">
-        <div class=" circularity-result">Circularity: {this.props.circularity} mm </div>
-        <i style={{ marginTop: '50px' }} class="fa fa-thumbs-o-up fa-5x" />
+        <div class={isOk}>Circularity: {circularity} mm </div>
+        {icon}
       </div>
     );
   }

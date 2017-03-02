@@ -61,8 +61,16 @@ body{
   align-items: center;
   flex-direction: column;
 }
-.circularity-result{
+.circularity-result-0k{
   background-color:#7cc05b;
+  width: 400px ;
+  border-radius: 10px;
+  margin: 10px;
+  font-size: 35px;
+  font-weight: bold;
+}
+.circularity-result-nok{
+  background-color: #ba4343;
   width: 400px ;
   border-radius: 10px;
   margin: 10px;

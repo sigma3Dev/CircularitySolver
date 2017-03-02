@@ -24,7 +24,7 @@ export default class MeasureCircle extends React.Component {
 
   onMeasure(){
     this.props.onScanCircleAction();
-    hashHistory.push('/circularityresult')
+    //hashHistory.push('/circularityresult')
   }
 
   render() {

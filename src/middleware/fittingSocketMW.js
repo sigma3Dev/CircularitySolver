@@ -1,7 +1,7 @@
 import * as fitting from 's3d-fitting-commands';
-
+import { hashHistory } from 'react-router';
 import {
-  MEASURE_POINT_ON_PLANE_SUCCESSFUL
+  MEASURE_POINT_ON_PLANE_SUCCESSFUL,
 } from '../actions/measureRefPlaneActions';
 
 import { calcRefPlaneSuccessful } from '../actions/calcRefPlaneActions';
@@ -20,7 +20,7 @@ let websocket;
  *
  * @param evt
  */
-export const initWebSocket = store => {
+export const initFittingWebSocket = (store) => {
   /**
   * as soon as the connection between Trackerpad and webservice is open
   * the function OnOpen will be triggered
@@ -30,15 +30,15 @@ export const initWebSocket = store => {
   */
   const onOpen = evt => {};
   // if the onOpen not successful -> onClose will be  triggered
-  const onClose = evt => {};
+  const onClose = (evt) => {};
 
   // if there is an error during the connection -> onErro will be triggered
-  const onError = evt => {
+  const onError = (evt) => {
     console.log(evt.data);
   };
 
   // dispatch specific action to trigger update
-  const onMessage = evt => {
+  const onMessage = (evt) => {
     const response = JSON.parse(evt.data);
 
     if (response == null) {
@@ -55,8 +55,9 @@ export const initWebSocket = store => {
 
     // checks if activeCmd.Type is right and if evt.data.id matchs with activeCmd.id
     if (activeCmd.type === 'fittingCircle' && activeCmd.id === response.id) {
-      if (response.result.successful) {
-        store.dispatch(calcCircularitySuccessful(0.66, 1300));
+      if (response.error == null) {
+        store.dispatch(calcCircularitySuccessful(response.result.tschebyDistance, response.result.radius));
+        hashHistory.push('/circularityresult')
       }
     } else if (
       activeCmd.type === 'projectPoints' && activeCmd.id === response.id
@@ -65,7 +66,7 @@ export const initWebSocket = store => {
         activeCmd.id += 1;
         activeCmd.type = 'fittingCircle';
         websocket.send(
-          fitting.fitCircle3DTscheby(response.points, activeCmd.id),
+          fitting.fitCircle3DTscheby(response.result.points, activeCmd.id),
         );
       }
     } else if (
@@ -74,12 +75,12 @@ export const initWebSocket = store => {
       if (response.error == null) {
         store.dispatch(
           calcRefPlaneSuccessful(
-            response.x,
-            response.y,
-            response.z,
-            response.i,
-            response.j,
-            response.k,
+            response.result.x,
+            response.result.y,
+            response.result.z,
+            response.result.i,
+            response.result.j,
+            response.result.k,
           ),
         );
       }
@@ -110,29 +111,31 @@ export const initWebSocket = store => {
  * backend via websocket connection.
  * @param store
  */
-export const sensorSocketMiddleware = store => next => (action) => {
+export const fittingSocketMiddleware = store => next => (action) => {
   // init local var
   const result = next(action);
 
   // react on specific actions. actions descripted in the sensorAction.js
   switch (action.type) {
     case SCAN_CIRCLE_SUCCESSFUL: {
+      const state = store.getState();
       activeCmd.id += 1;
       activeCmd.type = 'projectPoints';
       websocket.send(
         fitting.registerPointsInPlane(
-          store.refPlane,
-          store.circle.measurements,
+          state.refPlane,
+          state.circle.measurements,
           activeCmd.id,
         ),
       );
       break;
     }
     case MEASURE_POINT_ON_PLANE_SUCCESSFUL: {
-      if (store.refPlane.points.length === 4) {
+      const state = store.getState();
+      if (state.refPlane.points.length === 4) {
         activeCmd.id += 1;
         activeCmd.type = 'calcRefPlane';
-        websocket.send(fitting.fitPlaneL2(store.refPlane.points, activeCmd.id));
+        websocket.send(fitting.fitPlaneL2(state.refPlane.points, activeCmd.id));
       }
       break;
     }

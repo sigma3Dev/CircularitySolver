@@ -50,11 +50,11 @@ const refPlaneReducer = (state = initialRefPlane, action) => {
       return {
         ...state,
         x: action.payload.x,
-        y: action.payload.x,
-        z: action.payload.x,
-        i: action.payload.x,
-        j: action.payload.x,
-        k: action.payload.x,
+        y: action.payload.y,
+        z: action.payload.z,
+        i: action.payload.i,
+        j: action.payload.j,
+        k: action.payload.k,
       };
     }
     case MEASURE_POINT_ON_PLANE_FAIL:

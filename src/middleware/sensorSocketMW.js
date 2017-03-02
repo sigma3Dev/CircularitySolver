@@ -95,11 +95,9 @@ export const initWebSocket = (store) => {
       console.log(response)
       if (response.error == null && response.result.observationCount !== 0) {
         const singlePointMeasurement = {
-          coords: {
-            x: response.result.observations[0].values[0],
-            y: response.result.observations[0].values[1],
-            z: response.result.observations[0].values[2],
-          },
+          x: response.result.observations[0].values[0],
+          y: response.result.observations[0].values[1],
+          z: response.result.observations[0].values[2],
         };
         store.dispatch(measurePointOnPlaneSuccessful(singlePointMeasurement));
       } else {
@@ -123,7 +121,15 @@ export const initWebSocket = (store) => {
       console.log('scan result')
       console.log(response);
       if (response.error == null && response.result.observationCount !== 0) {
-        store.dispatch(scanCircleSuccessful(response.result.observations));
+        const obs = [];
+        response.result.observations.forEach((point) => {
+          obs.push({
+            x: point.values[0],
+            y: point.values[1],
+            z: point.values[2],
+          });
+        });
+        store.dispatch(scanCircleSuccessful(obs));
       } else {
         store.dispatch(scanCircleFail(response));
       }

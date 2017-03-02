@@ -6,7 +6,9 @@ import { hashHistory } from 'react-router';
 import { measurePointOnPlane } from '../actions/measureRefPlaneActions';
 
 const mapStateToProps = state => {
-  return {};
+  return {
+    pointCount: state.refPlane.points.length,
+  };
 };
 const mapDispatchToProps = dispatch => {
   return {
@@ -30,25 +32,28 @@ export default class MeasureRefPlane extends React.Component {
   }
   onMeasure() {
     this.props.onSingleMeasureAction();
-    if (this.state.pointOne.status === 'active') {
+  }
+
+  render() {
+    if (this.props.pointCount === 1 /* this.state.pointOne.status === 'active' */) {
       this.setState({
         ...this.state,
         pointOne: { status: 'measured' },
         pointTwo: { status: 'active' },
       });
-    } else if (this.state.pointTwo.status === 'active') {
+    } else if (this.props.pointCount === 2 /* this.state.pointTwo.status === 'active'*/) {
       this.setState({
         ...this.state,
         pointTwo: { status: 'measured' },
         pointThree: { status: 'active' },
       });
-    } else if (this.state.pointThree.status === 'active') {
+    } else if (this.props.pointCount === 3 /* this.state.pointThree.status === 'active'*/) {
       this.setState({
         ...this.state,
         pointThree: { status: 'measured' },
         pointFour: { status: 'active' },
       });
-    } else if (this.state.pointFour.status === 'active') {
+    } else if (this.props.pointCount === 4 /* this.state.pointFour.status === 'active'*/) {
       this.setState({
         ...this.state,
         pointFour: { status: 'measured' },
@@ -56,9 +61,6 @@ export default class MeasureRefPlane extends React.Component {
       hashHistory.push('/measurecircle');
     } else {
     }
-  }
-
-  render() {
     const first = [
       'The blue circle shows, where you can place the reflektor.',
       <br />,
