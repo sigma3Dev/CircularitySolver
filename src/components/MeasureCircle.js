@@ -41,7 +41,12 @@ export default class MeasureCircle extends React.Component {
             <Col sm={6} md={4} mdOffset={4}>{fourth}</Col>
           </Row>
         </Grid>
-        <Button class="btn btn-default central-button" onClick={this.onMeasure}>MEASURE</Button>
+        <Button
+          class="btn btn-default central-button"
+          onClick={this.onMeasure}
+          autoFocus
+          >
+          MEASURE</Button>
       </div>
     );
   }

@@ -33,27 +33,26 @@ export default class MeasureRefPlane extends React.Component {
   onMeasure() {
     this.props.onSingleMeasureAction();
   }
-
-  render() {
-    if (this.props.pointCount === 1 /* this.state.pointOne.status === 'active' */) {
+  componentWillReceiveProps(nextProps){
+    if (nextProps.pointCount === 1 /* this.state.pointOne.status === 'active' */) {
       this.setState({
         ...this.state,
         pointOne: { status: 'measured' },
         pointTwo: { status: 'active' },
       });
-    } else if (this.props.pointCount === 2 /* this.state.pointTwo.status === 'active'*/) {
+    } else if (nextProps.pointCount === 2 /* this.state.pointTwo.status === 'active'*/) {
       this.setState({
         ...this.state,
         pointTwo: { status: 'measured' },
         pointThree: { status: 'active' },
       });
-    } else if (this.props.pointCount === 3 /* this.state.pointThree.status === 'active'*/) {
+    } else if (nextProps.pointCount === 3 /* this.state.pointThree.status === 'active'*/) {
       this.setState({
         ...this.state,
         pointThree: { status: 'measured' },
         pointFour: { status: 'active' },
       });
-    } else if (this.props.pointCount === 4 /* this.state.pointFour.status === 'active'*/) {
+    } else if (nextProps.pointCount === 4 /* this.state.pointFour.status === 'active'*/) {
       this.setState({
         ...this.state,
         pointFour: { status: 'measured' },
@@ -61,6 +60,9 @@ export default class MeasureRefPlane extends React.Component {
       hashHistory.push('/measurecircle');
     } else {
     }
+  }
+  render() {
+
     const first = [
       'The blue circle shows, where you can place the reflektor.',
       <br />,
@@ -88,7 +90,12 @@ export default class MeasureRefPlane extends React.Component {
             <Col sm={6} md={4} mdOffset={4}>{second} </Col>
           </Row>
         </Grid>
-        <Button class="btn btn-default central-button" onClick={this.onMeasure}>
+        <Button
+          class="btn btn-default central-button"
+          onClick={this.onMeasure}
+          autoFocus
+        //  tabIndex = 1
+        >
           MEASURE
         </Button>
       </div>

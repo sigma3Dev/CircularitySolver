@@ -95,9 +95,9 @@ export const initWebSocket = (store) => {
       console.log(response)
       if (response.error == null && response.result.observationCount !== 0) {
         const singlePointMeasurement = {
-          x: response.result.observations[0].values[0],
-          y: response.result.observations[0].values[1],
-          z: response.result.observations[0].values[2],
+          x: response.result.observations[0].values[2] * Math.cos(response.result.observations[0].values[0]) * Math.sin(response.result.observations[0].values[1]),
+          y: response.result.observations[0].values[2] * Math.sin(response.result.observations[0].values[1]) * Math.sin(response.result.observations[0].values[0]),
+          z: response.result.observations[0].values[2] * Math.cos(response.result.observations[0].values[1]),
         };
         store.dispatch(measurePointOnPlaneSuccessful(singlePointMeasurement));
       } else {
@@ -123,6 +123,11 @@ export const initWebSocket = (store) => {
       if (response.error == null && response.result.observationCount !== 0) {
         const obs = [];
         response.result.observations.forEach((point) => {
+          /*obs.push({
+            x: point.values[2] * Math.sin(point.values[1]) * Math.cos(point.values[0]),
+            y: point.values[2] * Math.sin(point.values[1]) * Math.sin(point.values[0]),
+            z: point.values[2] * Math.cos(point.values[1]),
+          });*/
           obs.push({
             x: point.values[0],
             y: point.values[1],
@@ -201,7 +206,7 @@ export const sensorSocketMiddleware = store => next => (action) => {
     case SCAN_CIRCLE_REQUEST: {
       activeCmd.id += 1;
       activeCmd.type = 'scanCircleRequest';
-      websocket.send(sensorCmd.setScanByDistanceConfig(activeCmd.id, 1, 1300, 0.001));
+      websocket.send(sensorCmd.setScanByDistanceConfig(activeCmd.id, 1, 1100, 0.001));
       break;
     }
     default:

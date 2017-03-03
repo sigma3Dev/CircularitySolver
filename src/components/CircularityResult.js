@@ -24,7 +24,7 @@ export default class MeasureCircle extends React.Component {
     const circularity = parseFloat(this.props.circularity*1000).toFixed(3);
     let isOk = "circularity-result-ok";
     let icon = <i style={{ marginTop: '50px' }} class="fa fa-thumbs-o-up fa-5x" />
-    if (this.props.circularity * 1000 > 0.5) {
+    if (this.props.circularity * 1000 > 3.2) {
       isOk = "circularity-result-nok";
       icon = <i style={{ marginTop: '50px' }} class="fa fa-thumbs-o-down fa-5x" />
     }
