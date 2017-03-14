@@ -188,7 +188,7 @@ export const sensorSocketMiddleware = store => next => (action) => {
     case sensorActions.CHOOSE_FAROION_REQUEST: {
       activeCmd.id += 1;
       activeCmd.type = 'chooseFaroIon';
-      websocket.send(sensorCmd.chooseFaroIon(activeCmd.id, '128.128.128.100'));
+      websocket.send(sensorCmd.chooseFaroIon(activeCmd.id, '192.168.168.241'));
       break;
     }
     case sensorActions.CHOOSE_VANTAGE_REQUEST: {
